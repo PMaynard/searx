@@ -6,7 +6,7 @@ An Ansible role that installs the Searx metasearch engine
 Requirements
 ------------
 
-Pip needs to be installed on the target machine.
+Pip needs to be installed on the target machine. (This is automatically installed) 
 
 
 Role Variables
