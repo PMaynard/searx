@@ -12,7 +12,7 @@ Pip needs to be installed on the target machine.
 Role Variables
 --------------
 
-See ```vars/main.yml```
+See [vars/main.yml](https://github.com/PMaynard/searx/blob/master/vars/main.yml)
 
 Dependencies
 ------------
