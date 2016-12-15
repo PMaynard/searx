@@ -1,5 +1,5 @@
-Role Name
-=========
+Searx Role
+==========
 
 An Ansible role that installs the Searx metasearch engine
 
