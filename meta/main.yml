@@ -11,5 +11,5 @@ galaxy_info:
     - web
     - searx
     - search
-    - metasearch engine
+    - metasearch
 dependencies: []
