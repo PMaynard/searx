@@ -1,0 +1,15 @@
+[uwsgi]
+uid = {{ searx_user }}
+gid = {{ searx_user }}
+
+disable-logging = true
+workers = 4
+chmod-socket = 666
+single-interpreter = true
+master = true
+plugin = python
+module = searx.webapp
+
+virtualenv = {{ searx_install_path }}/searx-ve/
+pythonpath = {{ searx_install_path }}/
+chdir = {{ searx_install_path }}/searx/

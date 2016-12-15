@@ -1,0 +1,80 @@
+---
+- name: Install system dependencies
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+    - build-essential
+    - libxslt-dev
+    - python-pip 
+    - python-dev
+    - python-virtualenv
+    - python-pybabel
+    - zlib1g-dev
+    - libffi-dev
+    - libssl-dev
+    - uwsgi 
+    - uwsgi-plugin-python
+    - nginx # TODO: Make this configurable 
+
+- name: Clone searx from GitHub - version {{ searx_version }}.
+  git: 
+    repo: https://github.com/asciimoo/searx.git
+    dest: '{{ searx_install_path }}'
+    update: no
+    version: '{{ searx_version }}'
+
+- name: Create a new user, {{ searx_user }}.
+  user:
+    name: '{{ searx_user }}'
+    system: yes 
+    createhome: no
+    home: '{{ searx_install_path }}'
+
+- name: Correct Permissions
+  file: 
+    path: '{{ searx_install_path }}'
+    owner: '{{ searx_user }}'
+    group: '{{ searx_user }}'
+    recurse: yes
+
+- block:  
+  - name: Install python virtual enviromnet dependencies
+    pip:
+      virtualenv: searx-ve
+      virtualenv_site_packages: yes
+      virtualenv_python: python2.7
+      requirements: requirements.txt
+      extra_args: '--no-cache-dir'
+      chdir: '{{ searx_install_path }}'
+
+  - name: Configure secrect key
+    replace:
+      dest: '{{ searx_install_path }}/searx/settings.yml'
+      regexp: ultrasecretkey
+      replace: '{{ searx_secret }}'
+
+  become: yes
+  become_user: '{{ searx_user }}'
+
+- name: SystemD Service
+  template: src=searx.service dest=/etc/systemd/system/searx.service
+
+- name: Enabeling and starting searx
+  service:
+    name: searx
+    state: started
+    enabled: yes
+
+- name: Add uwsgi config
+  template: src=searx.ini.j2 dest=/etc/uwsgi/apps-available/searx.ini
+
+- name: Enable searx with uwsgi
+  file: src=/etc/uwsgi/apps-available/searx.ini dest=/etc/uwsgi/apps-enabled/searx.ini owner=root group=root state=link
+  notify: restart uwsgi
+
+- name: Add nginx config
+  template: src=searx.conf.j2 dest=/etc/nginx/sites-available/searx.conf
+
+- name: Enable searx with nginx
+  file: src=/etc/nginx/sites-available/searx.conf dest=/etc/nginx/sites-enabled/searx.conf owner=root group=root state=link
+  notify: restart nginx

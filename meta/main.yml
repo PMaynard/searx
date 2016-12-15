@@ -1,0 +1,15 @@
+galaxy_info:
+  author: Peter Maynard 
+  description: Searx metasearch engine
+  license: MIT 
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  galaxy_tags:
+    - web
+    - searx
+    - search
+    - metasearch engine
+dependencies: []

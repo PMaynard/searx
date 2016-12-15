@@ -1,0 +1,9 @@
+---
+searx_user: searx
+searx_version: v0.10.0
+searx_install_path: /usr/local/searx
+searx_hostname: localhost
+searx_nginx_access_logs: /dev/null
+searx_nginx_error_logs: /dev/null
+searx_uwsgi_socket: unix:/run/uwsgi/app/searx/socket
+searx_secret: ultrasecretkey

@@ -1,0 +1,14 @@
+server {
+        listen      80;
+        server_name {{ searx_hostname }};
+
+        access_log {{ searx_nginx_access_logs }};
+        error_log  {{ searx_nginx_error_logs }};
+
+        root {{ searx_install_path }}; 
+
+        location / {
+                include uwsgi_params;
+                uwsgi_pass {{ searx_uwsgi_socket }};
+        }
+}

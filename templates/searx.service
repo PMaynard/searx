@@ -1,0 +1,13 @@
+[Unit]
+Description=Searx Meta Search Engine
+
+[Service]
+Type=simple
+User={{ searx_user }}
+Group={{ searx_user }}
+Restart=on-failure
+WorkingDirectory={{ searx_install_path }}
+ExecStart={{ searx_install_path }}/searx-ve/bin/python searx/webapp.py
+
+[Install]
+WantedBy=multi-user.target
